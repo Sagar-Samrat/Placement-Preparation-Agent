@@ -1,0 +1,36 @@
+services:
+  # 1. FastAPI Backend Web Service
+  - type: web
+    name: prepagent-backend
+    env: docker
+    dockerfilePath: backend/Dockerfile
+    plan: free
+    envVars:
+      - key: MONGODB_URL
+        sync: false # Set your MongoDB Atlas URI here (e.g. mongodb+srv://...)
+      - key: DATABASE_NAME
+        value: placement_prep
+      - key: JWT_SECRET
+        generateValue: true # Render will automatically generate a secure random string for JWT signatures
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "1440"
+      - key: GEMINI_API_KEY
+        sync: false # Set your Google Gemini API key
+      - key: OPENAI_API_KEY
+        sync: false # Optional OpenAI API Key
+
+  # 2. React Frontend Web Service (Served as a Free Static Site)
+  - type: web
+    name: prepagent-frontend
+    env: static
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: prepagent-backend
+          property: host

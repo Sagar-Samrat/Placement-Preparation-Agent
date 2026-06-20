@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+motor
+pydantic[email]
+passlib[bcrypt]
+pyjwt
+python-multipart
+pypdf
+python-docx
+google-generativeai
+openai
+python-dotenv
+bcrypt

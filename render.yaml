@@ -22,8 +22,9 @@ services:
         sync: false # Optional OpenAI API Key
 
   # 2. React Frontend Web Service (Served as a Free Static Site)
-  - type: static
+  - type: web
     name: prepagent-frontend
+    env: static
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     envVars:
